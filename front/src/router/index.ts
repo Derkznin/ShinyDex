@@ -16,10 +16,22 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/inscription',
+      name: 'inscription',
+      component: () => import('../views/InscriptionView.vue'),
+    },
+    {
       path: '/connexion',
       name: 'connexion',
       component: () => import('../views/ConnexionView.vue'),
+    },
+    {
+      path: '/mot-de-passe-oublie',
+      name: 'motdepasseoublie',
+      component: () => import('../views/ProfilView.vue'),
+      meta: { requiresAuth: true }
     }
+
   ],
 })
 
