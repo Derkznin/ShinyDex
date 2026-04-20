@@ -13,14 +13,22 @@ class TagVersion
     use TimestampableTrait;
 
     #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'id_version', referencedColumnName: 'id', nullable: false)]
     private ?Version $version = null;
 
-    #[ORM\Id]
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(name: 'id_tag', referencedColumnName: 'id', nullable: false)]
     private ?Tag $tag = null;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     public function getVersion(): ?Version
     {

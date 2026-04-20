@@ -1,6 +1,6 @@
 FROM dunglas/frankenphp:latest-php8.3
 
-RUN install-php-extensions pdo pdo_pgsql opcache zip
+RUN install-php-extensions pdo pdo_pgsql opcache zip intl
 
 RUN apt-get update && apt-get install -y git unzip
 
