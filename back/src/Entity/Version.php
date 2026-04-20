@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use App\Entity\Trait\TimestampableTrait;
-use App\Repository\TagRepository;
+use App\Repository\VersionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: TagRepository::class)]
+#[ORM\Entity(repositoryClass: VersionRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Tag
+class Version
 {
     use TimestampableTrait;
 
@@ -23,12 +23,16 @@ class Tag
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $categorie = null;
+    private ?string $nomFichierImage = null;
+
+    #[ORM\ManyToOne(inversedBy: 'versions')]
+    #[ORM\JoinColumn(name: 'numero_pokemon', referencedColumnName: 'numero', nullable: false)]
+    private ?Pokemon $pokemon = null;
 
     /**
      * @var Collection<int, UtilisateurVersion>
      */
-    #[ORM\OneToMany(targetEntity: UtilisateurVersion::class, mappedBy: 'methodeObtention')]
+    #[ORM\OneToMany(targetEntity: UtilisateurVersion::class, mappedBy: 'version')]
     private Collection $utilisateurVersions;
 
     public function __construct()
@@ -53,14 +57,26 @@ class Tag
         return $this;
     }
 
-    public function getCategorie(): ?string
+    public function getNomFichierImage(): ?string
     {
-        return $this->categorie;
+        return $this->nomFichierImage;
     }
 
-    public function setCategorie(?string $categorie): static
+    public function setNomFichierImage(?string $nomFichierImage): static
     {
-        $this->categorie = $categorie;
+        $this->nomFichierImage = $nomFichierImage;
+
+        return $this;
+    }
+
+    public function getPokemon(): ?Pokemon
+    {
+        return $this->pokemon;
+    }
+
+    public function setPokemon(?Pokemon $pokemon): static
+    {
+        $this->pokemon = $pokemon;
 
         return $this;
     }
@@ -77,7 +93,7 @@ class Tag
     {
         if (!$this->utilisateurVersions->contains($utilisateurVersion)) {
             $this->utilisateurVersions->add($utilisateurVersion);
-            $utilisateurVersion->setMethodeObtention($this);
+            $utilisateurVersion->setVersion($this);
         }
 
         return $this;
@@ -87,8 +103,8 @@ class Tag
     {
         if ($this->utilisateurVersions->removeElement($utilisateurVersion)) {
             // set the owning side to null (unless already changed)
-            if ($utilisateurVersion->getMethodeObtention() === $this) {
-                $utilisateurVersion->setMethodeObtention(null);
+            if ($utilisateurVersion->getVersion() === $this) {
+                $utilisateurVersion->setVersion(null);
             }
         }
 
