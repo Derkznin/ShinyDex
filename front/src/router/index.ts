@@ -12,13 +12,13 @@ const router = createRouter({
     {
       path: '/profil',
       name: 'profil',
-      component: () => import('../views/Profil.vue'),
+      component: () => import('../views/ProfilView.vue'),
       meta: { requiresAuth: true }
     },
     {
       path: '/connexion',
       name: 'connexion',
-      component: () => import('../views/Connexion.vue'),
+      component: () => import('../views/ConnexionView.vue'),
     }
   ],
 })
