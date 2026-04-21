@@ -6,6 +6,9 @@ erDiagram
     TAG ||--o{ OBTENTION : "méthode d'obtention"
     OBTENTION ||--o{ OBTENTION_TAG : "est contextualisée par"
     TAG ||--o{ OBTENTION_TAG : "contextualise"
+    UTILISATEUR ||--o{ POKEMON_FAVORI : "a des favoris"
+    POKEMON ||--o{ POKEMON_FAVORI : "est favori de"
+    VERSION ||--o{ POKEMON_FAVORI : "est la version favorite"
 
     UTILISATEUR {
         int id PK
@@ -67,4 +70,12 @@ erDiagram
         int id_tag FK
         datetime date_creation
         datetime date_modification
+    }
+
+    POKEMON_FAVORI {
+        int id PK
+        int id_utilisateur FK
+        int id_pokemon FK
+        int id_version FK
+        datetime date_creation
     }

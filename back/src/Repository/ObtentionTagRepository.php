@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\UtilisateurVersion;
+use App\Entity\ObtentionTag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<UtilisateurVersion>
+ * @extends ServiceEntityRepository<ObtentionTag>
  */
-class UtilisateurVersionRepository extends ServiceEntityRepository
+class ObtentionTagRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, UtilisateurVersion::class);
+        parent::__construct($registry, ObtentionTag::class);
     }
 
     //    /**
-    //     * @return UtilisateurVersion[] Returns an array of UtilisateurVersion objects
+    //     * @return ObtentionTag[] Returns an array of ObtentionTag objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
+    //            ->orderBy('o.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?UtilisateurVersion
+    //    public function findOneBySomeField($value): ?ObtentionTag
     //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
+    //        return $this->createQueryBuilder('o')
+    //            ->andWhere('o.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

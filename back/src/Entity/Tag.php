@@ -26,14 +26,21 @@ class Tag
     private ?string $categorie = null;
 
     /**
-     * @var Collection<int, UtilisateurVersion>
+     * @var Collection<int, Obtention>
      */
-    #[ORM\OneToMany(targetEntity: UtilisateurVersion::class, mappedBy: 'methodeObtention')]
-    private Collection $utilisateurVersions;
+    #[ORM\OneToMany(targetEntity: Obtention::class, mappedBy: 'methodeObtention')]
+    private Collection $obtentions;
+
+    /**
+     * @var Collection<int, ObtentionTag>
+     */
+    #[ORM\OneToMany(targetEntity: ObtentionTag::class, mappedBy: 'tag', orphanRemoval: true)]
+    private Collection $obtentionTags;
 
     public function __construct()
     {
-        $this->utilisateurVersions = new ArrayCollection();
+        $this->obtentions = new ArrayCollection();
+        $this->obtentionTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -66,29 +73,29 @@ class Tag
     }
 
     /**
-     * @return Collection<int, UtilisateurVersion>
+     * @return Collection<int, Obtention>
      */
-    public function getUtilisateurVersions(): Collection
+    public function getObtentions(): Collection
     {
-        return $this->utilisateurVersions;
+        return $this->obtentions;
     }
 
-    public function addUtilisateurVersion(UtilisateurVersion $utilisateurVersion): static
+    public function addObtention(Obtention $obtention): static
     {
-        if (!$this->utilisateurVersions->contains($utilisateurVersion)) {
-            $this->utilisateurVersions->add($utilisateurVersion);
-            $utilisateurVersion->setMethodeObtention($this);
+        if (!$this->obtentions->contains($obtention)) {
+            $this->obtentions->add($obtention);
+            $obtention->setMethodeObtention($this);
         }
 
         return $this;
     }
 
-    public function removeUtilisateurVersion(UtilisateurVersion $utilisateurVersion): static
+    public function removeObtention(Obtention $obtention): static
     {
-        if ($this->utilisateurVersions->removeElement($utilisateurVersion)) {
+        if ($this->obtentions->removeElement($obtention)) {
             // set the owning side to null (unless already changed)
-            if ($utilisateurVersion->getMethodeObtention() === $this) {
-                $utilisateurVersion->setMethodeObtention(null);
+            if ($obtention->getMethodeObtention() === $this) {
+                $obtention->setMethodeObtention(null);
             }
         }
 
@@ -97,6 +104,36 @@ class Tag
 
     public function __toString(): string
     {
-        return $this->categorie.' - '.$this->nom;
+        return ($this->categorie ?? '').' - '.($this->nom ?? '');
+    }
+
+    /**
+     * @return Collection<int, ObtentionTag>
+     */
+    public function getObtentionTags(): Collection
+    {
+        return $this->obtentionTags;
+    }
+
+    public function addObtentionTag(ObtentionTag $obtentionTag): static
+    {
+        if (!$this->obtentionTags->contains($obtentionTag)) {
+            $this->obtentionTags->add($obtentionTag);
+            $obtentionTag->setTag($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObtentionTag(ObtentionTag $obtentionTag): static
+    {
+        if ($this->obtentionTags->removeElement($obtentionTag)) {
+            // set the owning side to null (unless already changed)
+            if ($obtentionTag->getTag() === $this) {
+                $obtentionTag->setTag(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -3,14 +3,15 @@
 namespace App\Entity;
 
 use App\Entity\Trait\TimestampableTrait;
-use App\Repository\UtilisateurVersionRepository;
+use App\Repository\ObtentionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Entity(repositoryClass: UtilisateurVersionRepository::class)]
-#[ORM\UniqueConstraint(name: 'uniq_utilisateur_version', fields: ['utilisateur', 'version'])]
-class UtilisateurVersion
+#[ORM\Entity(repositoryClass: ObtentionRepository::class)]
+class Obtention
 {
     use TimestampableTrait;
 
@@ -28,16 +29,27 @@ class UtilisateurVersion
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'utilisateurVersions')]
+    #[ORM\ManyToOne(inversedBy: 'obtentions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'utilisateurVersions')]
+    #[ORM\ManyToOne(inversedBy: 'obtentions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Version $version = null;
 
-    #[ORM\ManyToOne(inversedBy: 'utilisateurVersions')]
+    #[ORM\ManyToOne(inversedBy: 'obtentions')]
     private ?Tag $methodeObtention = null;
+
+    /**
+     * @var Collection<int, ObtentionTag>
+     */
+    #[ORM\OneToMany(targetEntity: ObtentionTag::class, mappedBy: 'obtention', orphanRemoval: true)]
+    private Collection $obtentionTags;
+
+    public function __construct()
+    {
+        $this->obtentionTags = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,5 +126,40 @@ class UtilisateurVersion
         $this->methodeObtention = $methodeObtention;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, ObtentionTag>
+     */
+    public function getObtentionTags(): Collection
+    {
+        return $this->obtentionTags;
+    }
+
+    public function addObtentionTag(ObtentionTag $obtentionTag): static
+    {
+        if (!$this->obtentionTags->contains($obtentionTag)) {
+            $this->obtentionTags->add($obtentionTag);
+            $obtentionTag->setObtention($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObtentionTag(ObtentionTag $obtentionTag): static
+    {
+        if ($this->obtentionTags->removeElement($obtentionTag)) {
+            // set the owning side to null (unless already changed)
+            if ($obtentionTag->getObtention() === $this) {
+                $obtentionTag->setObtention(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return ($this->utilisateur ? (string) $this->utilisateur : '').' - '.($this->version ? (string) $this->version : '');
     }
 }

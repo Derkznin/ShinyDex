@@ -34,6 +34,8 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkTo(UtilisateurCrudController::class, 'Utilisateurs', 'fa fa-users');
-        yield MenuItem::linkTo(UtilisateurVersionCrudController::class, 'Collections', 'fa fa-star');
+        yield MenuItem::linkTo(ObtentionCrudController::class, 'Collections', 'fa fa-star');
+        yield MenuItem::linkTo(ObtentionTagCrudController::class, 'Tags d\'obtention', 'fa fa-tag');
+        yield MenuItem::linkTo(PokemonFavoriCrudController::class, 'Favoris', 'fa fa-heart');
     }
 }

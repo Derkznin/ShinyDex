@@ -27,9 +27,16 @@ class Pokemon
     #[ORM\OneToMany(targetEntity: Version::class, mappedBy: 'pokemon')]
     private Collection $versions;
 
+    /**
+     * @var Collection<int, PokemonFavori>
+     */
+    #[ORM\OneToMany(targetEntity: PokemonFavori::class, mappedBy: 'pokemon', orphanRemoval: true)]
+    private Collection $pokemonFavoris;
+
     public function __construct()
     {
         $this->versions = new ArrayCollection();
+        $this->pokemonFavoris = new ArrayCollection();
     }
 
     public function getNumero(): ?int
@@ -89,5 +96,35 @@ class Pokemon
     public function __toString(): string
     {
         return $this->numero.' - '.$this->nom;
+    }
+
+    /**
+     * @return Collection<int, PokemonFavori>
+     */
+    public function getPokemonFavoris(): Collection
+    {
+        return $this->pokemonFavoris;
+    }
+
+    public function addPokemonFavori(PokemonFavori $pokemonFavori): static
+    {
+        if (!$this->pokemonFavoris->contains($pokemonFavori)) {
+            $this->pokemonFavoris->add($pokemonFavori);
+            $pokemonFavori->setPokemon($this);
+        }
+
+        return $this;
+    }
+
+    public function removePokemonFavori(PokemonFavori $pokemonFavori): static
+    {
+        if ($this->pokemonFavoris->removeElement($pokemonFavori)) {
+            // set the owning side to null (unless already changed)
+            if ($pokemonFavori->getPokemon() === $this) {
+                $pokemonFavori->setPokemon(null);
+            }
+        }
+
+        return $this;
     }
 }

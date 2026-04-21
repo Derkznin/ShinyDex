@@ -41,14 +41,21 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
-     * @var Collection<int, UtilisateurVersion>
+     * @var Collection<int, Obtention>
      */
-    #[ORM\OneToMany(targetEntity: UtilisateurVersion::class, mappedBy: 'utilisateur', orphanRemoval: true)]
-    private Collection $utilisateurVersions;
+    #[ORM\OneToMany(targetEntity: Obtention::class, mappedBy: 'utilisateur', orphanRemoval: true)]
+    private Collection $obtentions;
+
+    /**
+     * @var Collection<int, PokemonFavori>
+     */
+    #[ORM\OneToMany(targetEntity: PokemonFavori::class, mappedBy: 'utilisateur', orphanRemoval: true)]
+    private Collection $pokemonFavoris;
 
     public function __construct()
     {
-        $this->utilisateurVersions = new ArrayCollection();
+        $this->obtentions = new ArrayCollection();
+        $this->pokemonFavoris = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,29 +152,29 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, UtilisateurVersion>
+     * @return Collection<int, Obtention>
      */
-    public function getUtilisateurVersions(): Collection
+    public function getObtentions(): Collection
     {
-        return $this->utilisateurVersions;
+        return $this->obtentions;
     }
 
-    public function addUtilisateurVersion(UtilisateurVersion $utilisateurVersion): static
+    public function addObtention(Obtention $obtention): static
     {
-        if (!$this->utilisateurVersions->contains($utilisateurVersion)) {
-            $this->utilisateurVersions->add($utilisateurVersion);
-            $utilisateurVersion->setUtilisateur($this);
+        if (!$this->obtentions->contains($obtention)) {
+            $this->obtentions->add($obtention);
+            $obtention->setUtilisateur($this);
         }
 
         return $this;
     }
 
-    public function removeUtilisateurVersion(UtilisateurVersion $utilisateurVersion): static
+    public function removeObtention(Obtention $obtention): static
     {
-        if ($this->utilisateurVersions->removeElement($utilisateurVersion)) {
+        if ($this->obtentions->removeElement($obtention)) {
             // set the owning side to null (unless already changed)
-            if ($utilisateurVersion->getUtilisateur() === $this) {
-                $utilisateurVersion->setUtilisateur(null);
+            if ($obtention->getUtilisateur() === $this) {
+                $obtention->setUtilisateur(null);
             }
         }
 
@@ -177,5 +184,35 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->username ?? '';
+    }
+
+    /**
+     * @return Collection<int, PokemonFavori>
+     */
+    public function getPokemonFavoris(): Collection
+    {
+        return $this->pokemonFavoris;
+    }
+
+    public function addPokemonFavori(PokemonFavori $pokemonFavori): static
+    {
+        if (!$this->pokemonFavoris->contains($pokemonFavori)) {
+            $this->pokemonFavoris->add($pokemonFavori);
+            $pokemonFavori->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removePokemonFavori(PokemonFavori $pokemonFavori): static
+    {
+        if ($this->pokemonFavoris->removeElement($pokemonFavori)) {
+            // set the owning side to null (unless already changed)
+            if ($pokemonFavori->getUtilisateur() === $this) {
+                $pokemonFavori->setUtilisateur(null);
+            }
+        }
+
+        return $this;
     }
 }
