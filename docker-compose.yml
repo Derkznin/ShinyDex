@@ -19,7 +19,7 @@ services:
     volumes:
       - ./back:/app
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@database:5432/${POSTGRES_DB}?serverVersion=16&charset=utf8
       CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
     depends_on:
       - database
