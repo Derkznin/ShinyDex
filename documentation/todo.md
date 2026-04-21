@@ -61,6 +61,8 @@
 
 
 # Suite
+## PRIO 1 Mise en place de l'api apiplateforme
+## PRIO 1 création de compte, authentification, déconnexion, changement de mot de pass sur symfonfy et api plateform avec bruno
 ## Espace admin vuejs - batch import 
 ## Layout (navbar etc)
 ## View principal
