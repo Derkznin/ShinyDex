@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\ObtentionTagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ObtentionTagRepository::class)]
 class ObtentionTag

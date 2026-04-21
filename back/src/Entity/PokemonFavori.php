@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\PokemonFavoriRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PokemonFavoriRepository::class)]
 #[ORM\UniqueConstraint(name: 'uniq_utilisateur_pokemon_favori', fields: ['utilisateur', 'pokemon'])]

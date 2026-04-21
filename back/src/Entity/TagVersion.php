@@ -5,7 +5,9 @@ namespace App\Entity;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\TagVersionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
+#[ApiResource]
 #[ORM\Entity(repositoryClass: TagVersionRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 class TagVersion

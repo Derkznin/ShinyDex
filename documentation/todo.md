@@ -1,34 +1,54 @@
 # Back
-## Modifications Doctrine à faire
-### Renommage UtilisateurVersion → Obtention
-1. Renommer `UtilisateurVersion` → `Obtention` (entité + repository)
-2. Supprimer la contrainte unique `uniq_utilisateur_version`
-3. Mettre à jour les relations dans `Utilisateur` et `Version`
-4. Mettre à jour `UtilisateurVersionCrudController` → `ObtentionCrudController`
 
-### Nouvelle entité ObtentionTag
-5. Créer l'entité `ObtentionTag` (avec TimestampableTrait)
-   - ManyToOne vers `Obtention`
-   - ManyToOne vers `Tag`
-6. Créer `ObtentionTagRepository`
-7. Ajouter CRUD EasyAdmin `ObtentionTagCrudController`
 
-### Nouvelle entité PokemonFavori
-8. Créer l'entité `PokemonFavori` (avec TimestampableTrait)
-   - ManyToOne vers `Utilisateur`
-   - ManyToOne vers `Pokemon`
-   - ManyToOne vers `Version`
-   - Contrainte unique `(id_utilisateur, id_pokemon)`
-9. Créer `PokemonFavoriRepository`
-10. Ajouter CRUD EasyAdmin `PokemonFavoriCrudController`
+### 1. JWT Setup
+- [ ] Installer LexikJWTAuthenticationBundle (`composer require lexik/jwt-authentication-bundle`)
+- [ ] Générer les clés JWT (`php bin/console lexik:jwt:generate-keypair`)
+- [ ] Configurer `config/packages/lexik_jwt_authentication.yaml`
+- [ ] Configurer les variables d'env `JWT_SECRET_KEY`, `JWT_PUBLIC_KEY`, `JWT_PASSPHRASE`
 
-### Migrations
-11. Générer la migration (`make:migration`)
-    - `ALTER TABLE utilisateur_version RENAME TO obtention`
-    - `DROP CONSTRAINT uniq_utilisateur_version`
-    - `CREATE TABLE obtention_tag`
-    - `CREATE TABLE pokemon_favori`
-12. Exécuter la migration (`doctrine:migrations:migrate`)
+### 2. Security.yaml
+- [ ] Configurer le firewall `login` (json_login sur `/api/login`)
+- [ ] Configurer le firewall `api` (stateless + jwt)
+- [ ] Configurer le firewall `admin` (EasyAdmin protégé par ROLE_ADMIN)
+- [ ] Configurer `access_control` pour les routes publiques/protégées
+
+### 3. Inscription / Authentification
+- [ ] Créer `RegistrationController` avec route `POST /api/register`
+  - Validation des données (email, username, password)
+  - Hashage du mot de passe
+  - Création de l'utilisateur
+  - Retourner le JWT directement après inscription
+- [ ] Tester `/api/login` avec Bruno (retourne un JWT)
+- [ ] Tester `/api/register` avec Bruno
+
+### 4. Annotations ApiResource avec sécurité
+- [ ] **Pokemon** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [ ] **Tag** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [ ] **Version** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [ ] **TagVersion** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [ ] **Obtention** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
+- [ ] **ObtentionTag** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
+- [ ] **PokemonFavori** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
+
+### 5. Isolation des données utilisateur
+- [ ] Créer une extension Doctrine `CurrentUserExtension` pour filtrer automatiquement les `Obtention`, `ObtentionTag` et `PokemonFavori` par utilisateur connecté
+
+### 6. CORS
+- [ ] Installer NelmioCorsBundle (`composer require nelmio/cors-bundle`)
+- [ ] Configurer `config/packages/nelmio_cors.yaml` pour autoriser `localhost:5173`
+
+### 7. Protection EasyAdmin
+- [ ] Ajouter `#[IsGranted('ROLE_ADMIN')]` sur `DashboardController`
+
+### 8. Tests Bruno
+- [ ] POST `/api/register` → créer un compte
+- [ ] POST `/api/login` → récupérer un JWT
+- [ ] GET `/api/pokemon` sans JWT → 200 (public)
+- [ ] POST `/api/pokemon` sans JWT → 401
+- [ ] POST `/api/pokemon` avec JWT ROLE_ADMIN → 201
+- [ ] GET `/api/obtentions` avec JWT ROLE_USER → uniquement ses données
+- [ ] GET `/api/obtentions` avec JWT d'un autre user → aucune donnée
 
 -----------------------------------------------------------------------------------------------
 
