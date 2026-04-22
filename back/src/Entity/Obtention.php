@@ -14,8 +14,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    normalizationContext: ['groups' => ['obtention:read']],
+    denormalizationContext: ['groups' => ['obtention:write']],
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
@@ -33,14 +36,18 @@ class Obtention
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['obtention:read'])]
     private ?int $id = null;
 
+    #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $dateObtention = null;
 
+    #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(nullable: true)]
     private ?int $iterationAvantObtention = null;
 
+    #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
 
@@ -48,10 +55,12 @@ class Obtention
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
+    #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\ManyToOne(inversedBy: 'obtentions')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Version $version = null;
 
+    #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\ManyToOne(inversedBy: 'obtentions')]
     private ?Tag $methodeObtention = null;
 

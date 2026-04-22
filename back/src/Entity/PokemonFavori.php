@@ -11,8 +11,11 @@ use ApiPlatform\Metadata\Post;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\PokemonFavoriRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ApiResource(
+    normalizationContext: ['groups' => ['pokemon_favori:read']],
+    denormalizationContext: ['groups' => ['pokemon_favori:write']],
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
@@ -31,16 +34,19 @@ class PokemonFavori
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['pokemon_favori:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'pokemonFavoris')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
+    #[Groups(['pokemon_favori:read', 'pokemon_favori:write'])]
     #[ORM\ManyToOne(inversedBy: 'pokemonFavoris')]
     #[ORM\JoinColumn(nullable: false, referencedColumnName: 'numero')]
     private ?Pokemon $pokemon = null;
 
+    #[Groups(['pokemon_favori:read', 'pokemon_favori:write'])]
     #[ORM\ManyToOne(inversedBy: 'pokemonFavoris')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Version $version = null;
