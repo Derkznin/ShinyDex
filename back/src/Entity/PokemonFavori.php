@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\PokemonFavoriRepository;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 
 #[ApiResource]
 #[ORM\HasLifecycleCallbacks]

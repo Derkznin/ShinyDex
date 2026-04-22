@@ -2,10 +2,10 @@
 
 
 ### 1. JWT Setup
-- [ ] Installer LexikJWTAuthenticationBundle (`composer require lexik/jwt-authentication-bundle`)
-- [ ] Générer les clés JWT (`php bin/console lexik:jwt:generate-keypair`)
-- [ ] Configurer `config/packages/lexik_jwt_authentication.yaml`
-- [ ] Configurer les variables d'env `JWT_SECRET_KEY`, `JWT_PUBLIC_KEY`, `JWT_PASSPHRASE`
+- [x] Installer LexikJWTAuthenticationBundle (`composer require lexik/jwt-authentication-bundle`)
+- [x] Générer les clés JWT (`php bin/console lexik:jwt:generate-keypair`)
+- [x] Configurer `config/packages/lexik_jwt_authentication.yaml`
+- [x] Configurer les variables d'env `JWT_SECRET_KEY`, `JWT_PUBLIC_KEY`, `JWT_PASSPHRASE`
 
 ### 2. Security.yaml
 - [ ] Configurer le firewall `login` (json_login sur `/api/login`)
