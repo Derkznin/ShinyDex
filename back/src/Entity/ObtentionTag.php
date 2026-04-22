@@ -3,11 +3,24 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Patch;
+use ApiPlatform\Metadata\Post;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\ObtentionTagRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new GetCollection(security: 'is_granted("ROLE_USER")'),
+        new Get(security: 'is_granted("ROLE_USER")'),
+        new Post(security: 'is_granted("ROLE_USER")'),
+        new Patch(security: 'is_granted("ROLE_USER")'),
+        new Delete(security: 'is_granted("ROLE_USER")'),
+    ]
+)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ObtentionTagRepository::class)]
 class ObtentionTag
