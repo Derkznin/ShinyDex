@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     normalizationContext: ['groups' => ['obtention:read']],
@@ -41,14 +42,17 @@ class Obtention
 
     #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\LessThanOrEqual('today')]
     private ?\DateTimeInterface $dateObtention = null;
 
     #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(nullable: true)]
+    #[Assert\Range(max: 100000)]
     private ?int $iterationAvantObtention = null;
 
     #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(max: 5000)]
     private ?string $notes = null;
 
     #[ORM\ManyToOne(inversedBy: 'obtentions')]

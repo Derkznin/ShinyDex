@@ -13,6 +13,7 @@ use App\Repository\PokemonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(
     operations: [
@@ -31,9 +32,13 @@ class Pokemon
 
     #[ORM\Id]
     #[ORM\Column]
+    #[Assert\NotNull]
+    #[Assert\Range(min: 1, max: 3000)]
     private ?int $numero = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     private ?string $nom = null;
 
     /**

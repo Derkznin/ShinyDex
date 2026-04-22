@@ -41,6 +41,10 @@
 ### 7. Protection EasyAdmin
 - [ ] Ajouter `#[IsGranted('ROLE_ADMIN')]` sur `DashboardController`
 
+### 8. Validation des données côté symfony
+- [x] utiliser des validateurs
+
+
 ### 8. Tests Bruno
 - [x] POST `/api/register` → créer un compte
 - [x] POST `/api/login` → récupérer un JWT
