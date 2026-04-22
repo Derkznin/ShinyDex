@@ -7,8 +7,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[IsGranted('ROLE_ADMIN')]
 class DashboardController extends AbstractDashboardController
 {
     public function index(): Response
@@ -34,6 +36,8 @@ class DashboardController extends AbstractDashboardController
 
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkTo(UtilisateurCrudController::class, 'Utilisateurs', 'fa fa-users');
-        yield MenuItem::linkTo(UtilisateurVersionCrudController::class, 'Collections', 'fa fa-star');
+        yield MenuItem::linkTo(ObtentionCrudController::class, 'Collections', 'fa fa-star');
+        yield MenuItem::linkTo(ObtentionTagCrudController::class, 'Tags d\'obtention', 'fa fa-tag');
+        yield MenuItem::linkTo(PokemonFavoriCrudController::class, 'Favoris', 'fa fa-heart');
     }
 }

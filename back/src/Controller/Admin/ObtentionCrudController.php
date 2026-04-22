@@ -2,19 +2,19 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\UtilisateurVersion;
+use App\Entity\Obtention;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 
-class UtilisateurVersionCrudController extends AbstractCrudController
+class ObtentionCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return UtilisateurVersion::class;
+        return Obtention::class;
     }
 
     public function configureFields(string $pageName): iterable
@@ -26,7 +26,7 @@ class UtilisateurVersionCrudController extends AbstractCrudController
             AssociationField::new('methodeObtention'),
             DateTimeField::new('dateObtention'),
             IntegerField::new('iterationAvantObtention'),
-            TextField::new('notes'),
+            TextareaField::new('notes'),
             DateTimeField::new('dateCreation')->hideOnForm(),
             DateTimeField::new('dateModification')->hideOnForm(),
         ];
