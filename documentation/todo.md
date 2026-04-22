@@ -8,31 +8,31 @@
 - [x] Configurer les variables d'env `JWT_SECRET_KEY`, `JWT_PUBLIC_KEY`, `JWT_PASSPHRASE`
 
 ### 2. Security.yaml
-- [ ] Configurer le firewall `login` (json_login sur `/api/login`)
-- [ ] Configurer le firewall `api` (stateless + jwt)
-- [ ] Configurer le firewall `admin` (EasyAdmin protégé par ROLE_ADMIN)
-- [ ] Configurer `access_control` pour les routes publiques/protégées
+- [x] Configurer le firewall `login` (json_login sur `/api/login`)
+- [x] Configurer le firewall `api` (stateless + jwt)
+- [x] Configurer le firewall `admin` (EasyAdmin protégé par ROLE_ADMIN)
+- [x] Configurer `access_control` pour les routes publiques/protégées
 
 ### 3. Inscription / Authentification
-- [ ] Créer `RegistrationController` avec route `POST /api/register`
+- [x] Créer `RegistrationController` avec route `POST /api/register`
   - Validation des données (email, username, password)
   - Hashage du mot de passe
   - Création de l'utilisateur
   - Retourner le JWT directement après inscription
-- [ ] Tester `/api/login` avec Bruno (retourne un JWT)
-- [ ] Tester `/api/register` avec Bruno
+- [x] Tester `/api/login` avec Bruno (retourne un JWT)
+- [x] Tester `/api/register` avec Bruno
 
 ### 4. Annotations ApiResource avec sécurité
-- [ ] **Pokemon** — GET public, POST/PATCH/DELETE ROLE_ADMIN
-- [ ] **Tag** — GET public, POST/PATCH/DELETE ROLE_ADMIN
-- [ ] **Version** — GET public, POST/PATCH/DELETE ROLE_ADMIN
-- [ ] **TagVersion** — GET public, POST/PATCH/DELETE ROLE_ADMIN
-- [ ] **Obtention** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
-- [ ] **ObtentionTag** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
-- [ ] **PokemonFavori** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
+- [x] **Pokemon** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [x] **Tag** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [x] **Version** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [x] **TagVersion** — GET public, POST/PATCH/DELETE ROLE_ADMIN
+- [x] **Obtention** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
+- [x] **ObtentionTag** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
+- [x] **PokemonFavori** — toutes opérations ROLE_USER, filtrage par utilisateur connecté
 
 ### 5. Isolation des données utilisateur
-- [ ] Créer une extension Doctrine `CurrentUserExtension` pour filtrer automatiquement les `Obtention`, `ObtentionTag` et `PokemonFavori` par utilisateur connecté
+- [x] Créer une extension Doctrine `CurrentUserExtension` pour filtrer automatiquement les `Obtention`, `ObtentionTag` et `PokemonFavori` par utilisateur connecté
 
 ### 6. CORS
 - [ ] Installer NelmioCorsBundle (`composer require nelmio/cors-bundle`)
@@ -42,12 +42,12 @@
 - [ ] Ajouter `#[IsGranted('ROLE_ADMIN')]` sur `DashboardController`
 
 ### 8. Tests Bruno
-- [ ] POST `/api/register` → créer un compte
-- [ ] POST `/api/login` → récupérer un JWT
+- [x] POST `/api/register` → créer un compte
+- [x] POST `/api/login` → récupérer un JWT
 - [ ] GET `/api/pokemon` sans JWT → 200 (public)
 - [ ] POST `/api/pokemon` sans JWT → 401
 - [ ] POST `/api/pokemon` avec JWT ROLE_ADMIN → 201
-- [ ] GET `/api/obtentions` avec JWT ROLE_USER → uniquement ses données
+- [x] GET `/api/obtentions` avec JWT ROLE_USER → uniquement ses données
 - [ ] GET `/api/obtentions` avec JWT d'un autre user → aucune donnée
 
 -----------------------------------------------------------------------------------------------
