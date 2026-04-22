@@ -8,8 +8,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Entity\Contract\UserOwnedInterface;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\PokemonFavoriRepository;
+use App\State\ObtentionProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -19,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_USER")'),
+        new Post(security: 'is_granted("ROLE_USER")', processor: ObtentionProcessor::class),
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_USER")'),
     ]
@@ -27,7 +29,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: PokemonFavoriRepository::class)]
 #[ORM\UniqueConstraint(name: 'uniq_utilisateur_pokemon_favori', fields: ['utilisateur', 'pokemon'])]
-class PokemonFavori
+class PokemonFavori implements UserOwnedInterface
 {
     use TimestampableTrait;
 

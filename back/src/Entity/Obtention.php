@@ -8,8 +8,10 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\Entity\Contract\UserOwnedInterface;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\ObtentionRepository;
+use App\State\ObtentionProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -23,17 +25,16 @@ use Symfony\Component\Validator\Constraints as Assert;
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_USER")'),
+        new Post(security: 'is_granted("ROLE_USER")', processor: ObtentionProcessor::class),
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_USER")'),
     ]
 )]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: ObtentionRepository::class)]
-class Obtention
+class Obtention implements UserOwnedInterface
 {
     use TimestampableTrait;
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

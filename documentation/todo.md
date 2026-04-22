@@ -15,10 +15,10 @@
 
 ### 3. Inscription / Authentification
 - [x] Créer `RegistrationController` avec route `POST /api/register`
-  - Validation des données (email, username, password)
-  - Hashage du mot de passe
-  - Création de l'utilisateur
-  - Retourner le JWT directement après inscription
+- [x] Validation des données (email, username, password)
+- [x] Hashage du mot de passe
+- [x] Création de l'utilisateur
+- [x] Retourner le JWT directement après inscription
 - [x] Tester `/api/login` avec Bruno (retourne un JWT)
 - [x] Tester `/api/register` avec Bruno
 
@@ -39,11 +39,13 @@
 - [ ] Configurer `config/packages/nelmio_cors.yaml` pour autoriser `localhost:5173`
 
 ### 7. Protection EasyAdmin
-- [ ] Ajouter `#[IsGranted('ROLE_ADMIN')]` sur `DashboardController`
+- [x] Ajouter `#[IsGranted('ROLE_ADMIN')]` sur `DashboardController`
 
 ### 8. Validation des données côté symfony
-- [x] utiliser des validateurs
+- [x] utiliser des validateurs dans les entités ou les assert
 
+### 9. Sécurité RegistrationController
+- [x] validation de données
 
 ### 8. Tests Bruno
 - [x] POST `/api/register` → créer un compte
@@ -85,7 +87,6 @@
 
 
 # Suite
-## PRIO 1 Mise en place de l'api apiplateforme
 ## PRIO 1 création de compte, authentification, déconnexion, changement de mot de pass sur symfonfy et api plateform avec bruno
 ## Espace admin vuejs - batch import 
 ## Layout (navbar etc)
