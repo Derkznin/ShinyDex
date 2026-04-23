@@ -27,3 +27,6 @@ services:
     App\State\ObtentionTagProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\State\PokemonFavoriProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'

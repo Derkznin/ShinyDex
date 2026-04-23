@@ -43,12 +43,15 @@ class Obtention implements UserOwnedInterface
 
     #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    // Borne basse : sortie de Pokémon Rouge/Vert au Japon — avant, aucun shiny n'existait.
+    // Borne haute : aujourd'hui — interdit les dates futures.
+    #[Assert\GreaterThanOrEqual('1996-02-27')]
     #[Assert\LessThanOrEqual('today')]
     private ?\DateTimeInterface $dateObtention = null;
 
     #[Groups(['obtention:read', 'obtention:write'])]
     #[ORM\Column(nullable: true)]
-    #[Assert\Range(max: 100000)]
+    #[Assert\Range(min: 0, max: 100000)]
     private ?int $iterationAvantObtention = null;
 
     #[Groups(['obtention:read', 'obtention:write'])]
