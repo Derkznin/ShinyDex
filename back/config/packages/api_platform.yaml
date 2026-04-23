@@ -1,5 +1,6 @@
 api_platform:
-    title: Hello API Platform
+    title: ShinyDex API
+    description: API REST du Shiny Living Dex Tracker — gestion des Pokémon chromatiques par utilisateur.
     version: 1.0.0
     defaults:
         stateless: true

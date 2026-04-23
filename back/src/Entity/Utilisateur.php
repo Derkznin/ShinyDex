@@ -7,13 +7,22 @@ use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// Q7 — unicité applicative + BDD sur `email`.
+// Nécessaire pour les futures fonctionnalités « reset password » et « 2FA par email » :
+// un email doit identifier un seul compte.
+// L'email reste nullable : on ne force pas sa saisie tant que le reset password n'est pas en place.
+// En PostgreSQL, un UNIQUE INDEX sur une colonne nullable autorise plusieurs NULL (standard SQL).
+#[UniqueEntity(fields: ['username'], message: 'Ce nom d\'utilisateur est déjà pris.')]
+#[UniqueEntity(fields: ['email'], message: 'Un compte utilise déjà cet email.', ignoreNull: true)]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_UTILISATEUR_EMAIL', fields: ['email'])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use TimestampableTrait;

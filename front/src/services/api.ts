@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const instance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 1000,
+  timeout: 10000, // 10s — 1s était trop court pour Symfony + BDD au cold start
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json'
@@ -10,7 +10,7 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  const token = localStorage.getItem('jwt_token')
+  const token = sessionStorage.getItem('jwt_token')
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
   }
@@ -21,7 +21,7 @@ instance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      localStorage.removeItem('jwt_token')
+      sessionStorage.removeItem('jwt_token')
       window.location.href = '/connexion'
     }
     return Promise.reject(error)
