@@ -24,3 +24,6 @@ services:
     App\State\ObtentionProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'
+    App\State\ObtentionTagProcessor:
+        bind:
+            $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'

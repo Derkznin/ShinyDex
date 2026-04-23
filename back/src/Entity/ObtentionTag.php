@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\ObtentionTagRepository;
+use App\State\ObtentionTagProcessor;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -19,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_USER")'),
+        new Post(security: 'is_granted("ROLE_USER")', processor: ObtentionTagProcessor::class),
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_USER")'),
     ]
@@ -36,7 +37,9 @@ class ObtentionTag
     #[Groups(['obtention_tag:read'])]
     private ?int $id = null;
 
-    // Pas de groupe → jamais exposé, casse la référence circulaire avec Obtention
+    // Pas de groupe read → pas de référence circulaire avec Obtention
+    // Le client envoie l'IRI en write, API Platform résout automatiquement
+    #[Groups(['obtention_tag:write'])]
     #[ORM\ManyToOne(inversedBy: 'obtentionTags')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Obtention $obtention = null;
