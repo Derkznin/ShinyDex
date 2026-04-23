@@ -41,7 +41,13 @@ class Version
     private ?string $nom = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    // Regex stricte : nom de fichier simple, sans chemin ni caractères dangereux
+    // Bloque : ../etc/passwd, /absolute/path, null bytes, etc.
     #[Assert\Length(max: 255)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z0-9_\-\.]+\.(png|jpg|jpeg|webp)$/',
+        message: 'Nom de fichier invalide. Format attendu : lettres, chiffres, tirets, underscores, extension png/jpg/jpeg/webp.'
+    )]
     private ?string $nomFichierImage = null;
 
     #[ORM\ManyToOne(inversedBy: 'versions')]

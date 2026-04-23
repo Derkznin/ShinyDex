@@ -11,7 +11,12 @@ use ApiPlatform\Metadata\Post;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\TagVersionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
+#[UniqueEntity(
+    fields: ['version', 'tag'],
+    message: 'Ce tag est déjà associé à cette version.'
+)]
 #[ApiResource(
     operations: [
         new GetCollection(),
@@ -23,6 +28,7 @@ use Doctrine\ORM\Mapping as ORM;
 )]
 #[ORM\Entity(repositoryClass: TagVersionRepository::class)]
 #[ORM\HasLifecycleCallbacks]
+#[ORM\UniqueConstraint(name: 'uniq_version_tag', fields: ['version', 'tag'])]
 class TagVersion
 {
     use TimestampableTrait;

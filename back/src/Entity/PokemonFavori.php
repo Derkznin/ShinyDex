@@ -11,17 +11,24 @@ use ApiPlatform\Metadata\Post;
 use App\Entity\Contract\UserOwnedInterface;
 use App\Entity\Trait\TimestampableTrait;
 use App\Repository\PokemonFavoriRepository;
-use App\State\ObtentionProcessor;
+use App\State\PokemonFavoriProcessor;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+// UniqueEntity : retourne un 422 propre avant d'atteindre la BDD
+// Sans ça, un doublon lève une IntegrityConstraintViolationException → 500
+#[UniqueEntity(
+    fields: ['utilisateur', 'pokemon'],
+    message: 'Ce Pokémon est déjà dans vos favoris.'
+)]
 #[ApiResource(
     normalizationContext: ['groups' => ['pokemon_favori:read']],
     denormalizationContext: ['groups' => ['pokemon_favori:write']],
     operations: [
         new GetCollection(security: 'is_granted("ROLE_USER")'),
         new Get(security: 'is_granted("ROLE_USER")'),
-        new Post(security: 'is_granted("ROLE_USER")', processor: ObtentionProcessor::class),
+        new Post(security: 'is_granted("ROLE_USER")', processor: PokemonFavoriProcessor::class),
         new Patch(security: 'is_granted("ROLE_USER")'),
         new Delete(security: 'is_granted("ROLE_USER")'),
     ]

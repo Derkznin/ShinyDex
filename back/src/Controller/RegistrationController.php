@@ -28,9 +28,17 @@ class RegistrationController extends AbstractController
             return $this->json(['message' => 'Username et password requis'], 400);
         }
 
+        // Validation du password brut AVANT tout hashage
+        // Le hash d'une chaîne vide ou triviale réussit côté Symfony — on valide ici en amont
+        $password = (string) $data['password'];
+        if (strlen($password) < 8 || strlen($password) > 24) {
+            return $this->json(['errors' => ['Le password doit contenir entre 8 et 24 caractères']], 422);
+        }
+
         $existingUser = $utilisateurRepository->findOneBy(['username' => $data['username']]);
         if ($existingUser) {
-            return $this->json(['message' => 'Ce username est déjà pris'], 409);
+            // Message volontairement générique : évite l'username enumeration
+            return $this->json(['errors' => ['Données invalides']], 422);
         }
 
         $utilisateur = new Utilisateur();
@@ -48,7 +56,7 @@ class RegistrationController extends AbstractController
             return $this->json(['errors' => $messages], 422);
         }
 
-        $hashedPassword = $passwordHasher->hashPassword($utilisateur, $data['password']);
+        $hashedPassword = $passwordHasher->hashPassword($utilisateur, $password);
         $utilisateur->setPassword($hashedPassword);
 
         $entityManager->persist($utilisateur);
